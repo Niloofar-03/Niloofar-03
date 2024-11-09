@@ -1,0 +1,170 @@
+public class AirportLog {
+
+   private String name;
+   private ArrayList<Airport> airports; 
+	
+	public AirportLog() {
+		 this.name = "Unknown";
+		 this.airports = new ArrayList<>();
+	}
+	
+	public AirportLog(String name, ArrayList<Airport> airports) {
+		this.name=name!=null && !name.isEmpty() ?name:"Unknown";
+		this.airports=airports !=null ? new ArrayList<>(airports): new ArrayList<>();
+	}
+
+	public String getName() {
+		if(name.isEmpty()) {
+			return"Unknown";
+		}
+		return name;
+	}
+
+	  public ArrayList<Airport> getAirports() {
+		
+		  return airports;
+	  }
+
+	public void addAirport(Airport airport) {
+		
+		airports.add(airport);
+	}
+
+	public int size() {
+		
+		  return airports != null ? airports.size() : 0;
+	}
+
+	public AirportLog findAirport(String state, String country) {
+		 ArrayList<Airport> matchingAirports = new ArrayList<>();
+		for (Airport airport : this.airports) {
+	        if (airport.getAirportState().equals(state) && airport.getAirportCountry().equals(country)) {
+	            matchingAirports.add(airport);
+	        }
+	    }
+		return new AirportLog("Filtered Log", matchingAirports);
+	}
+
+	public Airport findAirport(int index) {
+		if(index<0 || index>=airports.size()) {
+			return null;
+		}
+		return airports.get(index);
+	}
+	
+	  
+	
+}
+
+class Airport {
+	private String airportCode;
+	private String airportName;
+	private String airportCity;
+	private String airportState;
+	private String airportCountry;
+	private double latitude;
+	private double longitude;
+	
+	public Airport() {
+		this.airportCode="";
+		this.airportName="";
+		this.airportCity="";
+		this.airportState="";
+		this.airportCountry="";
+		this.latitude=0.0;
+		this.longitude=0.0;
+	}
+
+
+	public Airport(String airportInfo) {
+		 try {  
+			 String[] parts = airportInfo.split(",");
+		 
+		    if (parts.length >= 7) {
+		    	
+		    	this.airportCode = parts[0].trim();
+		    	this.airportName = parts[1].trim();
+		    	this.airportCity = parts[2].trim();
+		        this.airportState = parts[3].trim();
+		        this.airportCountry = parts[4].trim();
+		        this.latitude = Double.parseDouble(parts[5].trim());
+		        this.longitude = Double.parseDouble(parts[6].trim());
+		    }else {
+	            throw new IllegalArgumentException("Insufficient data provided for Airport initialization.");
+	        }
+	    } catch (NumberFormatException e) {
+	        throw new IllegalArgumentException("Invalid latitude or longitude format.", e);
+	    }
+	}
+
+	public void setAirportCity(String airportCity) {
+		this.airportCity=airportCity;
+	}
+	public String getAirportCity() {
+		return airportCity;
+	}
+	
+	public void setAirportCode(String airportCode) {
+		this.airportCode=airportCode.trim();
+	}
+	public String getAirportCode() {
+		return airportCode;
+	}
+
+	public void setAirportCountry(String airportCountry) {
+		this.airportCountry=airportCountry;
+	}
+	public String getAirportCountry() {
+		return airportCountry;
+	}
+	
+	public void setLatitude(double latitude) {
+		this.latitude=latitude;
+		
+	}
+	public double getLatitude() {
+
+		return latitude;
+	}
+	
+    public void setLongitude(double longitude) {
+    	
+	this.longitude=longitude;
+	
+    }
+	public double getLongitude() {
+
+		return longitude;
+	}
+
+	public void setAirportState(String airportState) {
+		this.airportState=airportState.trim();
+	}
+	public String getAirportState() {
+
+		return airportState;
+	}
+
+	
+
+	public void setAirportName(String airportName) {
+		this.airportName=airportName.trim();
+		
+	}
+
+	public String getAirportName() {
+		
+		return airportName;
+		
+	}
+
+	 @Override
+	    public String toString() {
+		 if(airportName==null ||airportName.isEmpty()) {
+				return "Empty Airport";
+			}
+	
+		 return String.format( "%-30s|%-30s|%-30s|%-30s|%-30s|%-30.6f|%-30.6f",
+		         airportCode, airportName, airportCity, airportState, airportCountry, latitude, longitude);
+	      
+	    }
